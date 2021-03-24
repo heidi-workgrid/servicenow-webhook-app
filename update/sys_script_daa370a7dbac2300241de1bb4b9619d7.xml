@@ -29,11 +29,17 @@
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
 	var wgUtils = new WorkgridUtils();
+	var gdt = new GlideDateTime();
+
 	if (current) {
-		wgUtils.sendWorkgridRequestDetails(current.document_id, false, 'ApprovalInsertedUpdated', true, current.document_id, current);
+	var isValidSource = current.source_table == 'sc_request' || current.source_table == 'sc_req_item';
+		if (isValidSource) {
+		gs.info('ApprovalInsertedUpdated: Valid source ' + current.source_table); wgUtils.sendWorkgridRequestDetails(current.document_id, false, 'ApprovalInsertedUpdated', true, current.document_id, current);
+		} else {
+		gs.info(gdt.getNumericValue() + ' ApprovalInsertedUpdated' + ' source not valid: ' + current.source_table);
+		}
 	} else {
-		var gdt = new GlideDateTime();
-		gs.info(gdt.getNumericValue() + 'ApprovalInsertedUpdated' + ' current is null');
+		gs.info(gdt.getNumericValue() + ' ApprovalInsertedUpdated' + ' current is null');
 	}
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
@@ -42,15 +48,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>daa370a7dbac2300241de1bb4b9619d7</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>16</sys_mod_count>
         <sys_name>ApprovalInsertedUpdated</sys_name>
         <sys_overrides/>
         <sys_package display_value="Workgrid" source="x_254212_workgridg">62321899db20230045cbeb41ca961956</sys_package>
         <sys_policy/>
         <sys_scope display_value="Workgrid">62321899db20230045cbeb41ca961956</sys_scope>
         <sys_update_name>sys_script_daa370a7dbac2300241de1bb4b9619d7</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-11-15 15:30:26</sys_updated_on>
+        <sys_updated_by>jewel.agresta</sys_updated_by>
+        <sys_updated_on>2021-03-19 15:37:58</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>
